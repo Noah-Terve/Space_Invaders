@@ -8,6 +8,7 @@ entity top is
 	    nes_clk            : out std_logic;
 		temp  			   : out std_logic_vector (7 downto 0);
         nes_latch          : out std_logic;
+		
 		disp 			   : out std_logic_vector(6 downto 0);
 		top_two 		   : out std_logic_vector(1 downto 0);
 		led 			   : out std_logic_vector(1 downto 0)
@@ -92,10 +93,10 @@ begin
         playerx => logic_playerx, playery => logic_playery,
         bulletx => logic_bulletx, bullety => logic_bullety, bulletvalid => logic_bulletvalid
     );
-	display : dddd port map (display_clk => clk, position => logic_alieny(7 downto 0), display_val => disp, leds => led);
+	display : dddd port map (display_clk => clk, position => logic_bullety(7 downto 0), display_val => disp, leds => led);
 	temp <= nes_result;
-	top_two(0) <= logic_alieny(8);
-	top_two(1) <= logic_alienx(9);
+	top_two(0) <= logic_bullety(8);
+	top_two(1) <= logic_bulletvalid;
 
     -- create instances of the various needed modules and map their ports appropriately
 end synth;
