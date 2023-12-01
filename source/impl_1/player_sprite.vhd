@@ -18,7 +18,7 @@ architecture synth of player_sprite is
         process(clk) is begin
             if rising_edge(clk) then
                 case addr is
-                    			when "0000000000" => rgb <= "000000";
+                    			when "00000000" => rgb <= "000000";
 					when "00000001" => rgb <= "000000";
 					when "00000010" => rgb <= "000000";
 					when "00000011" => rgb <= "000000";
