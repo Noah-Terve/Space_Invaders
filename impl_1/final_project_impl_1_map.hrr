@@ -1,0 +1,66 @@
+---------------------------------------------------
+Report for cell top
+   Instance path: top
+                     Cell usage:
+                                  cell	      count    Res Usage(%)
+                                 IOLGC	       9.00        100.0
+                                  LUT4	        131        100.0
+                               LUTGATE	         69        100.0
+                                LUTCCU	         62        100.0
+                                 IOREG	          9        100.0
+                                 IOBUF	         22        100.0
+                                PFUREG	         72        100.0
+SUB MODULES
+                                  cell	      count    LUT4 Usage(%)
+                            controller	          1        31.3
+                                  dddd	          1        24.4
+                            game_logic	          1        31.3
+---------------------------------------------------
+Report for cell dddd
+   Instance path: top/display
+                     Cell usage:
+                                  cell	      count    Res Usage(%)
+                                 IOLGC	       1.00        11.1
+                                  LUT4	         32        24.4
+                               LUTGATE	         22        31.9
+                                LUTCCU	         10        16.1
+                                 IOREG	          1        11.1
+                                PFUREG	         10        13.9
+SUB MODULES
+                                  cell	      count    LUT4 Usage(%)
+                              sevenseg	          1         5.3
+                           sevenseg_U0	          1         5.3
+---------------------------------------------------
+Report for cell sevenseg
+   Instance path: top/display/tens
+                     Cell usage:
+                                  cell	      count    Res Usage(%)
+                                  LUT4	          7         5.3
+                               LUTGATE	          7        10.1
+---------------------------------------------------
+Report for cell sevenseg_U0
+   Instance path: top/display/ones
+                     Cell usage:
+                                  cell	      count    Res Usage(%)
+                                  LUT4	          7         5.3
+                               LUTGATE	          7        10.1
+---------------------------------------------------
+Report for cell game_logic
+   Instance path: top/logic
+                     Cell usage:
+                                  cell	      count    Res Usage(%)
+                                  LUT4	         41        31.3
+                               LUTGATE	         11        15.9
+                                LUTCCU	         30        48.4
+                                PFUREG	         25        34.7
+---------------------------------------------------
+Report for cell controller
+   Instance path: top/nes
+                     Cell usage:
+                                  cell	      count    Res Usage(%)
+                                 IOLGC	       8.00        88.9
+                                  LUT4	         41        31.3
+                               LUTGATE	         19        27.5
+                                LUTCCU	         22        35.5
+                                 IOREG	          8        88.9
+                                PFUREG	         37        51.4

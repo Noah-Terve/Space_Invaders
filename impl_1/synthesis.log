@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+=======
+synthesis:  version Radiant Software (64-bit) 2023.1.0.43.3
+
+Copyright (c) 1991-1994 by NeoCAD Inc. All rights reserved.
+Copyright (c) 1995 AT&T Corp.   All rights reserved.
+Copyright (c) 1995-2001 Lucent Technologies Inc.  All rights reserved.
+Copyright (c) 2001 Agere Systems   All rights reserved.
+Copyright (c) 2002-2023 Lattice Semiconductor Corporation,  All rights reserved.
+Fri Dec  1 15:08:46 2023
+
+
+Command Line:  C:\lscc\radiant\2023.1\ispfpga\bin\nt64\synthesis.exe -f final_project_impl_1_lattice.synproj -gui -msgset Z:/es4/Space_Invaders/promote.xml 
+
+>>>>>>> 2c8dd8f (updates from today's work 12-3)
 Synthesis options:
 The -a option is iCE40UP.
 The -t option is SG48.
@@ -130,5 +145,111 @@ Analyzing VHDL file z:/es4/space_invaders/source/impl_1/top.vhd. VHDL-1481
 Analyzing VHDL file z:/es4/space_invaders/source/impl_1/top.vhd
 
 INFO <35921012> - synthesis: z:/es4/space_invaders/source/impl_1/top.vhd(5): analyzing entity top. VHDL-1012
+<<<<<<< HEAD
 INFO <35921010> - synthesis: z:/es4/space_invaders/source/impl_1/top.vhd(14): analyzing architecture synth. VHDL-1010
 ERROR <35921261> - synthesis: z:/es4/space_invaders/source/impl_1/top.vhd(30): syntax error near component. VHDL-1261
+=======
+INFO <35921010> - synthesis: z:/es4/space_invaders/source/impl_1/top.vhd(17): analyzing architecture synth. VHDL-1010
+Analyzing VHDL file z:/es4/space_invaders/source/impl_1/seven_seg_testing/dddd.vhd. VHDL-1481
+Analyzing VHDL file z:/es4/space_invaders/source/impl_1/seven_seg_testing/dddd.vhd
+
+INFO <35921012> - synthesis: z:/es4/space_invaders/source/impl_1/seven_seg_testing/dddd.vhd(5): analyzing entity dddd. VHDL-1012
+INFO <35921010> - synthesis: z:/es4/space_invaders/source/impl_1/seven_seg_testing/dddd.vhd(15): analyzing architecture sim. VHDL-1010
+Analyzing VHDL file z:/es4/space_invaders/source/impl_1/seven_seg_testing/sevenseg.vhd. VHDL-1481
+Analyzing VHDL file z:/es4/space_invaders/source/impl_1/seven_seg_testing/sevenseg.vhd
+
+INFO <35921012> - synthesis: z:/es4/space_invaders/source/impl_1/seven_seg_testing/sevenseg.vhd(5): analyzing entity sevenseg. VHDL-1012
+INFO <35921010> - synthesis: z:/es4/space_invaders/source/impl_1/seven_seg_testing/sevenseg.vhd(12): analyzing architecture synth. VHDL-1010
+Analyzing VHDL file z:/es4/space_invaders/source/impl_1/game_logic.vhd. VHDL-1481
+Analyzing VHDL file z:/es4/space_invaders/source/impl_1/game_logic.vhd
+
+INFO <35921012> - synthesis: z:/es4/space_invaders/source/impl_1/game_logic.vhd(5): analyzing entity game_logic. VHDL-1012
+INFO <35921010> - synthesis: z:/es4/space_invaders/source/impl_1/game_logic.vhd(24): analyzing architecture synth. VHDL-1010
+Analyzing VHDL file z:/es4/space_invaders/source/impl_1/controller.vhd. VHDL-1481
+Analyzing VHDL file z:/es4/space_invaders/source/impl_1/controller.vhd
+
+INFO <35921012> - synthesis: z:/es4/space_invaders/source/impl_1/controller.vhd(5): analyzing entity controller. VHDL-1012
+INFO <35921010> - synthesis: z:/es4/space_invaders/source/impl_1/controller.vhd(16): analyzing architecture synth. VHDL-1010
+INFO <35921504> - synthesis: The default VHDL library search path is now "Z:/es4/Space_Invaders/impl_1". VHDL-1504
+Top module language type = VHDL.
+Top module name (VHDL, mixed language): top
+                                                         
+
+
+### Number of Logic Cells: 5280
+
+
+### Number of RAM Blocks: 30
+
+
+### Number of DSP Blocks: 8
+
+
+### Number of PLLs: 1
+
+
+### Number of IO Pins: 56
+
+
+##########################################################
+
+
+                                                         
+
+
+
+
+
+Combinational loop found : 1
+
+ Net \logic/alien_direction 
+
+ Instance \logic/i54 
+
+ Net \logic/n441 
+
+ Instance \logic/i53 
+
+INFO <35002039> - synthesis: Special Primitives IFD1P3AZ and OFD1P3AZ for ThunderPlus are synthesized using IOL_B.
+
+################### Begin Area Report (top)######################
+Number of register bits => 72 of 5280 (1 % )
+CCU2 => 31
+FD1P3XZ => 72
+HSOSC_CORE => 1
+IB => 1
+IOL_B => 9
+LUT4 => 53
+OB => 21
+################### End Area Report ##################
+Number of odd-length carry chains : 3
+Number of even-length carry chains : 2
+
+################### Begin Clock Report ######################
+Clock Nets
+Number of Clocks: 2
+  Net : nes/nes_clk_c, loads : 1
+  Net : clk, loads : 0
+Clock Enable Nets
+Number of Clock Enables: 0
+Highest fanout non-clock nets
+Top 10 highest fanout non-clock nets:
+  Net : nes/NEScount_0__N_55, loads : 21
+  Net : logic/alien_clock[5], loads : 18
+  Net : nes/counter[20], loads : 18
+  Net : logic/n315, loads : 10
+  Net : nes/temp_two_0__N_16, loads : 9
+  Net : nes/counter[20]_enable_8, loads : 8
+  Net : display/led_c_0, loads : 7
+  Net : logic/logic_alieny[7], loads : 7
+  Net : logic/logic_alieny[6], loads : 7
+  Net : logic/logic_alieny[5], loads : 7
+################### End Clock Report ##################
+
+Peak Memory Usage: 105 MB
+
+--------------------------------------------------------------
+Total CPU Time: 2 secs 
+Total REAL Time: 3 secs 
+--------------------------------------------------------------
+>>>>>>> 2c8dd8f (updates from today's work 12-3)

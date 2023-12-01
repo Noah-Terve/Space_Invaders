@@ -5,9 +5,9 @@ use IEEE.numeric_std.all;
 entity controller is
     port(
         in_clk : in std_logic;
-	    controller_clk : out std_logic := '0';
-        latch : out std_logic := '0';
-        data : in std_logic := '0';
+	    controller_clk : out std_logic;
+        latch : out std_logic;
+        data : in std_logic;
         result : out std_logic_vector(7 downto 0)
     );
 end controller;
@@ -16,10 +16,10 @@ end controller;
 architecture synth of controller is
 
 signal NESclk : std_logic;
-signal NEScount : unsigned (8 downto 0)  := 9b"0";
-signal counter : unsigned(20 downto 0) := 21b"0";
-signal temp : std_logic_vector (7 downto 0) := 8b"0";
-signal temp_two : std_logic_vector (7 downto 0) := 8b"0";
+signal NEScount : unsigned (8 downto 0);
+signal counter : unsigned(20 downto 0);
+signal temp : std_logic_vector (7 downto 0);
+signal temp_two : std_logic_vector (7 downto 0);
 
 begin
 

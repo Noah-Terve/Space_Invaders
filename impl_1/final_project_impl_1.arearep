@@ -1,0 +1,66 @@
+----------------------------------------------------------------------
+Report for cell top.TECH
+Register bits:  72 of 5280 (1.364%)
+I/O cells:      22
+                                  Cell usage:
+                               cell     count   Res Usage(%)
+                               CCU2        31          100.0
+                            FD1P3XZ        72          100.0
+                         HSOSC_CORE         1          100.0
+                                 IB         1          100.0
+                              IOL_B         9          100.0
+                               LUT4        53          100.0
+                                 OB        21          100.0
+SUB MODULES
+                         controller         1
+                               dddd         1
+                         game_logic         1
+                           sevenseg         1
+                        sevenseg_U0         1
+                              TOTAL       193
+----------------------------------------------------------------------
+Report for cell dddd.v1
+Instance Path : display
+                                  Cell usage:
+                               cell     count   Res Usage(%)
+                                FA2         5           16.1
+                            FD1P3XZ        10           13.9
+                              IOL_B         1           11.1
+                               LUT4        22           41.5
+SUB MODULES
+                           sevenseg         1
+                        sevenseg_U0         1
+                              TOTAL        40
+----------------------------------------------------------------------
+Report for cell sevenseg.v1
+Instance Path : display.tens
+                                  Cell usage:
+                               cell     count   Res Usage(%)
+                               LUT4         7           13.2
+                              TOTAL         7
+----------------------------------------------------------------------
+Report for cell sevenseg_U0.v1
+Instance Path : display.ones
+                                  Cell usage:
+                               cell     count   Res Usage(%)
+                               LUT4         7           13.2
+                              TOTAL         7
+----------------------------------------------------------------------
+Report for cell game_logic.v1
+Instance Path : logic
+                                  Cell usage:
+                               cell     count   Res Usage(%)
+                                FA2        15           48.4
+                            FD1P3XZ        25           34.7
+                               LUT4        11           20.8
+                              TOTAL        51
+----------------------------------------------------------------------
+Report for cell controller.v1
+Instance Path : nes
+                                  Cell usage:
+                               cell     count   Res Usage(%)
+                                FA2        11           35.5
+                            FD1P3XZ        37           51.4
+                              IOL_B         8           88.9
+                               LUT4        20           37.7
+                              TOTAL        76

@@ -79,6 +79,7 @@
         <Message>
             <ID>35921010</ID>
             <Severity>1</Severity>
+<<<<<<< HEAD
             <Dynamic>z:/es4/space_invaders/source/impl_1/top.vhd(14): </Dynamic>
             <Dynamic>synth</Dynamic>
             <Navigation>z:/es4/space_invaders/source/impl_1/top.vhd</Navigation>
@@ -91,6 +92,91 @@
             <Dynamic>component</Dynamic>
             <Navigation>z:/es4/space_invaders/source/impl_1/top.vhd</Navigation>
             <Navigation>30</Navigation>
+=======
+            <Dynamic>z:/es4/space_invaders/source/impl_1/top.vhd(17): </Dynamic>
+            <Dynamic>synth</Dynamic>
+            <Navigation>z:/es4/space_invaders/source/impl_1/top.vhd</Navigation>
+            <Navigation>17</Navigation>
+        </Message>
+        <Message>
+            <ID>35921012</ID>
+            <Severity>1</Severity>
+            <Dynamic>z:/es4/space_invaders/source/impl_1/seven_seg_testing/dddd.vhd(5): </Dynamic>
+            <Dynamic>dddd</Dynamic>
+            <Navigation>z:/es4/space_invaders/source/impl_1/seven_seg_testing/dddd.vhd</Navigation>
+            <Navigation>5</Navigation>
+        </Message>
+        <Message>
+            <ID>35921010</ID>
+            <Severity>1</Severity>
+            <Dynamic>z:/es4/space_invaders/source/impl_1/seven_seg_testing/dddd.vhd(15): </Dynamic>
+            <Dynamic>sim</Dynamic>
+            <Navigation>z:/es4/space_invaders/source/impl_1/seven_seg_testing/dddd.vhd</Navigation>
+            <Navigation>15</Navigation>
+        </Message>
+        <Message>
+            <ID>35921012</ID>
+            <Severity>1</Severity>
+            <Dynamic>z:/es4/space_invaders/source/impl_1/seven_seg_testing/sevenseg.vhd(5): </Dynamic>
+            <Dynamic>sevenseg</Dynamic>
+            <Navigation>z:/es4/space_invaders/source/impl_1/seven_seg_testing/sevenseg.vhd</Navigation>
+            <Navigation>5</Navigation>
+        </Message>
+        <Message>
+            <ID>35921010</ID>
+            <Severity>1</Severity>
+            <Dynamic>z:/es4/space_invaders/source/impl_1/seven_seg_testing/sevenseg.vhd(12): </Dynamic>
+            <Dynamic>synth</Dynamic>
+            <Navigation>z:/es4/space_invaders/source/impl_1/seven_seg_testing/sevenseg.vhd</Navigation>
+            <Navigation>12</Navigation>
+        </Message>
+        <Message>
+            <ID>35921012</ID>
+            <Severity>1</Severity>
+            <Dynamic>z:/es4/space_invaders/source/impl_1/game_logic.vhd(5): </Dynamic>
+            <Dynamic>game_logic</Dynamic>
+            <Navigation>z:/es4/space_invaders/source/impl_1/game_logic.vhd</Navigation>
+            <Navigation>5</Navigation>
+        </Message>
+        <Message>
+            <ID>35921010</ID>
+            <Severity>1</Severity>
+            <Dynamic>z:/es4/space_invaders/source/impl_1/game_logic.vhd(24): </Dynamic>
+            <Dynamic>synth</Dynamic>
+            <Navigation>z:/es4/space_invaders/source/impl_1/game_logic.vhd</Navigation>
+            <Navigation>24</Navigation>
+        </Message>
+        <Message>
+            <ID>35921012</ID>
+            <Severity>1</Severity>
+            <Dynamic>z:/es4/space_invaders/source/impl_1/controller.vhd(5): </Dynamic>
+            <Dynamic>controller</Dynamic>
+            <Navigation>z:/es4/space_invaders/source/impl_1/controller.vhd</Navigation>
+            <Navigation>5</Navigation>
+        </Message>
+        <Message>
+            <ID>35921010</ID>
+            <Severity>1</Severity>
+            <Dynamic>z:/es4/space_invaders/source/impl_1/controller.vhd(16): </Dynamic>
+            <Dynamic>synth</Dynamic>
+            <Navigation>z:/es4/space_invaders/source/impl_1/controller.vhd</Navigation>
+            <Navigation>16</Navigation>
+        </Message>
+        <Message>
+            <ID>35002039</ID>
+            <Severity>1</Severity>
+        </Message>
+    </Task>
+    <Task name="Export">
+        <Message>
+            <ID>1081100</ID>
+            <Severity>1</Severity>
+            <Dynamic>Bitstream authenticated.</Dynamic>
+        </Message>
+        <Message>
+            <ID>1191031</ID>
+            <Severity>1</Severity>
+>>>>>>> 2c8dd8f (updates from today's work 12-3)
         </Message>
     </Task>
 </BaliMessageLog>
