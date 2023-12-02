@@ -92,6 +92,7 @@ component gamestate is
         controller_data       : in std_logic_vector (7 downto 0);
         gameover			  : in std_logic;
         curr_gamestate		  : out unsigned (1 downto 0)
+        controller_data       : in std_logic_vector (7 downto 0) := 8b"0";
     );
 end component;
 
