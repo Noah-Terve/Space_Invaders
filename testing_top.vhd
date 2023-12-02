@@ -114,8 +114,13 @@ begin
 	display : dddd port map (display_clk => clk, position => logic_bullety(7 downto 0), display_val => disp, leds => led);
 
 	temp <= nes_result;
+<<<<<<< HEAD
 	top_two(0) <= logic_bullety(8);
 	top_two(1) <= logic_bulletvalid;
+=======
+	top_two(0) <= state(0);
+	top_two(1) <= state(1);
+>>>>>>> refs/remotes/origin/main
 
     -- create instances of the various needed modules and map their ports appropriately
 end synth;
