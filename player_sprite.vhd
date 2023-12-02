@@ -6,19 +6,19 @@ use IEEE.numeric_std.all;
 entity player_sprite is
   port(
     clk : in std_logic;
-    xaddr : in unsigned(4 downto 0);
-    yaddr : in unsigned(5 downto 0);
+    xaddr : in unsigned(3 downto 0);
+    yaddr : in unsigned(3 downto 0);
 	rgb : out std_logic_vector(5 downto 0)
   );
 end player_sprite;
 
 architecture synth of player_sprite is
-    signal addr : std_logic_vector(10 downto 0);         
+    signal addr : std_logic_vector(7 downto 0);         
     begin
         process(clk) is begin
             if rising_edge(clk) then
                 case addr is
-                    			when "00000000" => rgb <= "000000";
+					when "00000000" => rgb <= "000000";
 					when "00000001" => rgb <= "000000";
 					when "00000010" => rgb <= "000000";
 					when "00000011" => rgb <= "000000";
