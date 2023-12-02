@@ -123,6 +123,8 @@ begin
         end if;
     end process;
 	
+    player_yposition <= 9d"61";
+
 	alien_direction <= '0' when (alien_xposition > 10d"408")
 				  else '1' when (alien_xposition < 10b"100000") 
 				  else alien_direction;
