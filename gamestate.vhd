@@ -7,6 +7,7 @@ entity gamestate is
 	gamestate_clk         : in std_logic;
 	controller_data       : in std_logic_vector (7 downto 0);
 	gameover			  : in std_logic;
+	reset 				  : out std_logic;
 	curr_gamestate		  : out unsigned (1 downto 0)
     );
 end gamestate;
@@ -27,9 +28,13 @@ process (gamestate_clk) begin
 			cooldown_clk <= cooldown_clk - 1;
 		end if;
 
+		if (reset = '1') then
+			reset <= '0';
+		end if;
 
 		-- start button is pressed while game is not in play
 		if (curr_gamestate = 0 and controller_data(4) = '1' and cooldown_clk = 0) then
+			reset <= '1';
 			curr_gamestate <= "01";
 			cooldown_clk <= cooldown_init;
 		end if;
