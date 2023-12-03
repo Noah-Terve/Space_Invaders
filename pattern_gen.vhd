@@ -54,8 +54,8 @@ signal gameover_output : std_logic_vector(5 downto 0);
 -- Player Constants
 signal player_width : unsigned(3 downto 0);
 signal player_height : unsigned(3 downto 0);
-signal alien_x_offset : unsigned(4 downto 0);
-signal alien_y_offset : unsigned(4 downto 0);
+signal alien_x_offset : unsigned(9 downto 0);
+signal alien_y_offset : unsigned(9 downto 0);
 
 -- Player0
 signal drawing_player : std_logic;
@@ -187,6 +187,15 @@ component alien_sprite is
 	);
 end component;
 
+component alien2_sprite is
+	port(
+		clk : in std_logic;
+		xaddr : in unsigned(3 downto 0);
+		yaddr : in unsigned(3 downto 0);
+		rgb : out std_logic_vector(5 downto 0)
+	);
+end component;
+
 component bullet_sprite_rom is
 	port(
 		clk : in std_logic;
@@ -250,7 +259,7 @@ begin
 		rgb => alien1_pixel
 	);
 	
-	alien2_sprite_map : alien_sprite port map (
+	alien2_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien2_diff_x(3 downto 0),
 		yaddr => alien_diff_y(3 downto 0),
@@ -264,7 +273,7 @@ begin
 		rgb => alien3_pixel
 	);
 	
-	alien4_sprite_map : alien_sprite port map (
+	alien4_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien4_diff_x(3 downto 0),
 		yaddr => alien_diff_y(3 downto 0),
@@ -278,7 +287,7 @@ begin
 		rgb => alien5_pixel
 	);
 	
-	alien6_sprite_map : alien_sprite port map (
+	alien6_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien6_diff_x(3 downto 0),
 		yaddr => alien_diff_y(3 downto 0),
@@ -292,7 +301,7 @@ begin
 		rgb => alien7_pixel
 	);
 	
-	alien8_sprite_map : alien_sprite port map (
+	alien8_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien8_diff_x(3 downto 0),
 		yaddr => alien_diff_y(3 downto 0),
@@ -306,14 +315,14 @@ begin
 		rgb => alien9_pixel
 	);
 	
-	alien10_sprite_map : alien_sprite port map (
+	alien10_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien10_diff_x(3 downto 0),
 		yaddr => alien_diff_y(3 downto 0),
 		rgb => alien10_pixel
 	);
 	
-	alien11_sprite_map : alien_sprite port map (
+	alien11_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien_diff_x(3 downto 0),
 		yaddr => alien11_diff_y(3 downto 0),
@@ -327,7 +336,7 @@ begin
 		rgb => alien12_pixel
 	);
 	
-	alien13_sprite_map : alien_sprite port map (
+	alien13_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien3_diff_x(3 downto 0),
 		yaddr => alien11_diff_y(3 downto 0),
@@ -341,7 +350,7 @@ begin
 		rgb => alien14_pixel
 	);
 	
-	alien15_sprite_map : alien_sprite port map (
+	alien15_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien5_diff_x(3 downto 0),
 		yaddr => alien11_diff_y(3 downto 0),
@@ -355,7 +364,7 @@ begin
 		rgb => alien16_pixel
 	);
 	
-	alien17_sprite_map : alien_sprite port map (
+	alien17_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien7_diff_x(3 downto 0),
 		yaddr => alien11_diff_y(3 downto 0),
@@ -369,7 +378,7 @@ begin
 		rgb => alien18_pixel
 	);
 	
-	alien19_sprite_map : alien_sprite port map (
+	alien19_sprite_map : alien2_sprite port map (
 		clk => clk,
 		xaddr => alien9_diff_x(3 downto 0),
 		yaddr => alien11_diff_y(3 downto 0),
@@ -393,8 +402,8 @@ begin
 	alien_width <= 4d"11";
 	alien_height <= 4d"8";
 	
-	alien_x_offset <= 5d"20";
-	alien_y_offset <= 5d"15";
+	alien_x_offset <= 10d"32";
+	alien_y_offset <= 10d"29";
 	
 	-- Start screen disp logic --
 	startscreen_x_diff <= col - 10d"160";
@@ -432,36 +441,36 @@ begin
 	drawing_alien2 <= '1' when (aliens(1) = '0') and (col >= alien_x + alien_x_offset and col <= alien_x + alien_x_offset + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
 	
 	-- Alien 3 Display Logic --
-	alien3_diff_x <= col - (alien_x + ((alien_x_offset)* 2));
-	drawing_alien3 <= '1' when (aliens(2) = '0') and (col >= alien_x + (alien_x_offset * 2) and col <= alien_x + (alien_x_offset * 2) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
+	alien3_diff_x <= col - (alien_x + (alien_x_offset + alien_x_offset));
+	drawing_alien3 <= '1' when (aliens(2) = '0') and (col >= alien_x + (alien_x_offset + alien_x_offset) and col <= alien_x + (alien_x_offset + alien_x_offset) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
 	
 	-- Alien 4 Display Logic --
-	alien4_diff_x <= col - (alien_x + ((alien_x_offset)* 3));
-	drawing_alien4 <= '1' when (aliens(3) = '0') and (col >= alien_x + (alien_x_offset * 3) and col <= alien_x + (alien_x_offset * 3) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
+	alien4_diff_x <= col - (alien_x + (alien_x_offset + alien_x_offset + alien_x_offset));
+	drawing_alien4 <= '1' when (aliens(3) = '0') and (col >= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset) and col <= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
 	
 	-- Alien 5 Display Logic --
-	alien5_diff_x <= col - (alien_x + ((alien_x_offset)* 4));
-	drawing_alien5 <= '1' when (aliens(4) = '0') and (col >= alien_x + (alien_x_offset * 4) and col <= alien_x + (alien_x_offset * 4) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
+	alien5_diff_x <= col - (alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset));
+	drawing_alien5 <= '1' when (aliens(4) = '0') and (col >= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) and col <= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
 	
 	-- Alien 6 Display Logic --
-	alien6_diff_x <= col - (alien_x + ((alien_x_offset)* 5));
-	drawing_alien6 <= '1' when (aliens(5) = '0') and (col >= alien_x + (alien_x_offset * 5) and col <= alien_x + (alien_x_offset * 5) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
+	alien6_diff_x <= col - (alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset));
+	drawing_alien6 <= '1' when (aliens(5) = '0') and (col >= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) and col <= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
 	
 	-- Alien 7 Display Logic --
-	alien7_diff_x <= col - (alien_x + ((alien_x_offset)* 6));
-	drawing_alien7 <= '1' when (aliens(6) = '0') and (col >= alien_x + (alien_x_offset * 6) and col <= alien_x + (alien_x_offset * 6) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
+	alien7_diff_x <= col - (alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset));
+	drawing_alien7 <= '1' when (aliens(6) = '0') and (col >= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) and col <= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
 	
 	-- Alien 8 Display Logic --
-	alien8_diff_x <= col - (alien_x + ((alien_x_offset)* 7));
-	drawing_alien8 <= '1' when (aliens(7) = '0') and (col >= alien_x + (alien_x_offset * 7) and col <= alien_x + (alien_x_offset * 7) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
+	alien8_diff_x <= col - (alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset));
+	drawing_alien8 <= '1' when (aliens(7) = '0') and (col >= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) and col <= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
 	
 	-- Alien 9 Display Logic --
-	alien9_diff_x <= col - (alien_x + ((alien_x_offset)* 8));
-	drawing_alien9 <= '1' when (aliens(8) = '0') and (col >= alien_x + (alien_x_offset * 8) and col <= alien_x + (alien_x_offset * 8) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
+	alien9_diff_x <= col - (alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset));
+	drawing_alien9 <= '1' when (aliens(8) = '0') and (col >= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) and col <= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
 	
 	-- Alien 10 Display Logic --
-	alien10_diff_x <= col - (alien_x + ((alien_x_offset)* 9));
-	drawing_alien10 <= '1' when (aliens(9) = '0') and (col >= alien_x + (alien_x_offset * 9) and col <= alien_x + (alien_x_offset * 9) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
+	alien10_diff_x <= col - (alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset));
+	drawing_alien10 <= '1' when (aliens(9) = '0') and (col >= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) and col <= alien_x + (alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset + alien_x_offset) + alien_width) and (row >= alien_y and row <= alien_y + alien_height) else '0';
 	
 	-- Alien 11 Display Logic --
 	alien11_diff_y <= row - (alien_y + alien_y_offset);
