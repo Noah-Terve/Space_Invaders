@@ -45,9 +45,11 @@ signal bullet_clock       : unsigned (15 downto 0);
 signal cooldown_clk       : unsigned (15 downto 0);
 -- signal new_aliens_counter : unsigned (10 downto 0);
 
-signal alien_x_offset     : unsigned (4 downto 0);
-signal alien_y_offset     : unsigned (3 downto 0);
+signal alien_x_offset     : unsigned (5 downto 0);
+signal alien_y_offset     : unsigned (4 downto 0);
 signal gameover           : std_logic;
+
+signal alien_speed		  : unsigned (15 downto 0);
 
 begin
 
@@ -61,33 +63,19 @@ begin
     bulletvalid <= bullet_present;
 	game_over <= gameover;
 	
-	alien_x_offset <= 5d"20";
-    alien_y_offset <= 4d"15";
+	alien_x_offset <= 6d"32";
+    alien_y_offset <= 5d"29";
 
-    -- alien_positions <= "00000000000000000000" when reset = '1' else alien_positions;
-    -- alien_direction <= '0' when reset = '1' else alien_direction;
-    -- alien_xposition <= 10d"30" when reset = '1' else alien_xposition;
-    -- alien_yposition <= 10b"0" when reset = '1' else alien_yposition;
-    -- player_xposition <= 10d"30" when reset = '1' else player_xposition;
-
-	alien_direction <= '0' when (alien_xposition > 10d"408")
+	alien_direction <= '0' when (alien_xposition > 10d"290")
 				  else '1' when (alien_xposition < 10b"100000") 
 				  else alien_direction;
 
     process (given_clk) begin
         if rising_edge (given_clk) then
-            -- if (reset = '1') then
-            --     alien_positions <= "00000000000000000000";
-            --     alien_direction <= '0';
-            --     alien_xposition <= 10d"30";
-            --     alien_yposition <= 10b"0";
-            --     player_xposition <= 10d"30";
-            -- end if;
-            -- if (reset = '0') then
 
 				if ((gameover = '0') and (alien_positions = "11111111111111111111")) then
 					gameover <= '1';
-                elsif (alien_yposition > to_unsigned(396, 10)) then
+                elsif (alien_yposition > to_unsigned(382, 10)) then
                     gameover <= '1';
                 else
 					gameover <= '0';
@@ -143,7 +131,7 @@ begin
                 end if;
 
                 -- every x cycles update the alien positions
-                if (alien_clock(4) = '1') then
+                if ((alien_clock + alien_speed) > "10000") then
                     -- move aliens
                     if (alien_direction = '1') then
                         alien_xposition <= alien_xposition + 10b"1";
@@ -153,21 +141,12 @@ begin
                     if (alien_xposition = 10b"11111") then
                         alien_yposition <= alien_yposition + 15;
                     end if;
-                    if (alien_xposition = 10d"408") then
+                    if (alien_xposition = 10d"290") then
                         alien_yposition <= alien_yposition + 15;
                     end if;
                     
                     alien_clock <= 16b"0";
                 end if;
-                
-                -- if (bullet_present = '0') then
-                --     if (alien_positions = "11111111111111111111") then
-                --         alien_positions <= "00000000000000000000";
-                --         alien_direction <= '0';
-                --         alien_xposition <= 10d"30";
-                --         alien_yposition <= 10b"0";
-                --     end if;
-                -- end if;
 
 				if (bullet_present = '1') then
 
@@ -176,11 +155,9 @@ begin
                         if (bullet_yposition < (alien_yposition + 7)) and ((bullet_yposition + 12) > alien_yposition) then
                             if ((bullet_xposition + 5) > alien_xposition and bullet_xposition < (alien_xposition + 11)) then
                                 alien_positions(0) <= '1';
-                                bullet_present <= '0';
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(0) <= '0';
+
                     end if;
 
                     -- 2nd alien
@@ -189,10 +166,10 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + alien_x_offset and bullet_xposition < (alien_xposition + 11 + alien_x_offset)) then
                                 alien_positions(1) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(1) <= '0';
+
                     end if;
 
                     -- 3rd alien
@@ -201,10 +178,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 2) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 2))) then
                                 alien_positions(2) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(2) <= '0';
                     end if;
 
                     -- 4th alien
@@ -215,8 +191,6 @@ begin
                                 bullet_present <= '0';
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(3) <= '0';
                     end if;
                     
                     -- 5th alien
@@ -225,10 +199,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 4) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 4))) then
                                 alien_positions(4) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(4) <= '0';
                     end if;
                     
                     -- 6th alien
@@ -239,8 +212,6 @@ begin
                                 bullet_present <= '0';
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(5) <= '0';
                     end if;
                 
                     -- 7th alien
@@ -251,8 +222,6 @@ begin
                                 bullet_present <= '0';
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(6) <= '0';
                     end if;
 
                     -- 8th alien
@@ -261,10 +230,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 7) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 7))) then
                                 alien_positions(7) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(7) <= '0';
                     end if;
 
                     -- 9th alien
@@ -273,10 +241,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 8) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 8))) then
                                 alien_positions(8) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(8) <= '0';
                     end if;
 
                     -- 10th alien
@@ -285,10 +252,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 9) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 9))) then
                                 alien_positions(9) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(9) <= '0';
                     end if;
 
                     -- SECOND ROW =)
@@ -299,10 +265,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition and bullet_xposition < (alien_xposition + 11)) then
                                 alien_positions(10) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(10) <= '0';
                     end if;
 
                     -- 12th alien
@@ -311,10 +276,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + alien_x_offset and bullet_xposition < (alien_xposition + 11 + alien_x_offset)) then
                                 alien_positions(11) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(11) <= '0';
                     end if;
 
                     -- 13th alien
@@ -323,10 +287,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 2) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 2))) then
                                 alien_positions(12) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(12) <= '0';
                     end if;
 
                     -- 14th alien
@@ -335,10 +298,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 3) and bullet_xposition < (alien_xposition + 11 + alien_x_offset*3)) then
                                 alien_positions(13) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(13) <= '0';
                     end if;
                     
                     -- 15th alien
@@ -347,10 +309,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 4) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 4))) then
                                 alien_positions(14) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(14) <= '0';
                     end if;
                     
                     -- 16th alien
@@ -359,10 +320,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 5) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 5))) then
                                 alien_positions(15) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(15) <= '0';
                     end if;
                 
                     -- 17th alien
@@ -371,10 +331,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 6) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 6))) then
                                 alien_positions(16) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(16) <= '0';
                     end if;
 
                     -- 18th alien
@@ -383,10 +342,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 7) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 7))) then
                                 alien_positions(17) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(17) <= '0';
                     end if;
 
                     -- 19th alien
@@ -395,10 +353,9 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 8) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 8))) then
                                 alien_positions(18) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;   
-                        end if;   
-                    -- else   
-                    --     alien_positions(18) <= '0';
+                        end if;
                     end if;
 
                     -- 20th alien
@@ -407,15 +364,16 @@ begin
                             if ((bullet_xposition + 5) > alien_xposition + (alien_x_offset * 9) and bullet_xposition < (alien_xposition + 11 + (alien_x_offset * 9))) then
                                 alien_positions(19) <= '1';
                                 bullet_present <= '0';
+                                alien_speed <= alien_speed + 1;
                             end if;
                         end if;
-                    -- else
-                    --    alien_positions(19) <= '0';
                     end if;
                 elsif (alien_positions = "11111111111111111111") or (reset = '1') then
                     alien_positions <= "00000000000000000000";
                     alien_xposition <= 10d"30";
                     alien_yposition <= 10b"0";
+                    player_xposition <= 10d"315";
+                    alien_speed <= 16d"0";
                 end if;
             -- end if;
         end if;
