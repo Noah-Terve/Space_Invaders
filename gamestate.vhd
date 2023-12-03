@@ -56,7 +56,7 @@ process (gamestate_clk) begin
 		end if;
 	end if;
 	
-	cooldown_init <= 16d"4000";
+	cooldown_init <= 16d"1000";
 end process;
 
 end synth;
