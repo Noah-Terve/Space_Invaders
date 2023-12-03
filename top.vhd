@@ -9,11 +9,9 @@ entity top is
 		VSYNC : out std_logic; -- VSYNC to VGA
 		rgb : out std_logic_vector(5 downto 0); -- RGB output to VGA
 		
-		
 		nes_clk : out std_logic;
 		nes_data : in std_logic;
 		nes_latch : out std_logic
-		
 	);
 end top;
 
@@ -46,8 +44,19 @@ component pattern_gen is
 		row : in unsigned(9 downto 0); -- Given row of VGA display.
 		col : in unsigned(9 downto 0); -- Given col of VGA display.
 		rgb : out std_logic_vector(5 downto 0); -- RGB color to VGA display.
+		
 		player_x : in unsigned(9 downto 0);
-		player_y : in unsigned(9 downto 0)
+		player_y : in unsigned(9 downto 0);
+		
+		aliens  : in std_logic_vector (19 downto 0);
+		alien_x : in unsigned(9 downto 0);
+		alien_y : in unsigned(9 downto 0);
+		
+		bullet_x : in unsigned(9 downto 0);
+		bullet_y : in unsigned(9 downto 0);
+		bullet_valid : in std_logic;
+		
+		game_state : in unsigned (1 downto 0)
 	);
 end component;
 
@@ -65,21 +74,35 @@ component game_logic is
 	port(
 	    given_clk             : in std_logic;
         controller_data       : in std_logic_vector (7 downto 0);
+		reset 				  : in std_logic;
 
         -- position data
         aliens                : out std_logic_vector (19 downto 0);
         alienx                : out unsigned (9 downto 0);
-        alieny                : out unsigned (8 downto 0);
+        alieny                : out unsigned (9 downto 0);
         
         playerx               : out unsigned (9 downto 0);
-        playery               : out unsigned (8 downto 0);
+        playery               : out unsigned (9 downto 0);
 
         bulletx               : out unsigned (9 downto 0);
-        bullety               : out unsigned (8 downto 0);
-        bulletvalid           : out std_logic
+        bullety               : out unsigned (9 downto 0);
+        bulletvalid           : out std_logic;
+		
+		game_over			  : out std_logic
     );
 end component;
 		
+component gamestate is
+    port(
+		gamestate_clk         : in std_logic;
+		controller_data       : in std_logic_vector (7 downto 0);
+		gameover			  : in std_logic;
+		reset				  : out std_logic;
+		curr_gamestate		  : out unsigned (1 downto 0)
+    );
+end component;
+
+signal reset_sig : std_logic;
 signal outcore_o : std_logic;
 signal outglobal_o : std_logic;
 signal clk : std_logic;
@@ -94,13 +117,15 @@ signal nes_result : std_logic_vector(7 downto 0);
 
 signal logic_aliens       : std_logic_vector (19 downto 0);
 signal logic_alienx       : unsigned (9 downto 0);
-signal logic_alieny       : unsigned (8 downto 0);
+signal logic_alieny       : unsigned (9 downto 0);
 
 signal logic_bulletx      : unsigned (9 downto 0);
-signal logic_bullety      : unsigned (8 downto 0);
+signal logic_bullety      : unsigned (9 downto 0);
 signal logic_bulletvalid  : std_logic;
 
-signal temp : unsigned (9 downto 0);
+signal logic_game_over    : std_logic;
+signal state              : unsigned (1 downto 0);
+
 
 begin
 	pll : mypll
@@ -123,13 +148,20 @@ begin
 	
 	my_pattern_gen : pattern_gen
 		port map (
-			outglobal_o,
-			valid,
-			row,
-			col,
-			rgb,
-			player_x,
-			player_y
+			clk => outglobal_o,
+			valid => valid,
+			row => row,
+			col => col,
+			rgb => rgb,
+			player_x => player_x,
+			player_y => player_y,
+			aliens => logic_aliens,
+			alien_x => logic_alienx,
+			alien_y => logic_alieny,
+			bullet_x => logic_bulletx,
+			bullet_y => logic_bullety,
+			bullet_valid => logic_bulletvalid,
+			game_state => state
 		);
 		
 	new_controller : controller 
@@ -145,6 +177,7 @@ begin
 		port map (
 			given_clk => nes_clk,
 			controller_data => nes_result,
+			reset => reset_sig,
 
 			-- position data
 			aliens => logic_aliens,
@@ -152,15 +185,19 @@ begin
 			alieny => logic_alieny,
 			
 			playerx => player_x,
-			playery => temp,
+			playery => player_y,
 
 			bulletx => logic_bulletx,
 			bullety => logic_bullety,
-			bulletvalid => logic_bulletvalid
-		);
-		
-	
-		
-	-- player_x <= to_unsigned(10, 10);
-	player_y <= to_unsigned(419, 10);
+			bulletvalid => logic_bulletvalid,
+			
+			game_over => logic_game_over
+	);
+	statemachine : gamestate port map (
+		gamestate_clk => nes_clk, 
+		controller_data => nes_result,
+		gameover => logic_game_over,
+		reset => reset_sig,
+		curr_gamestate => state
+	);
 end;
