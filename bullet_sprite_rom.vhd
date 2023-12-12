@@ -12,7 +12,7 @@ entity bullet_sprite_rom is
 end bullet_sprite_rom;
 
 architecture synth of bullet_sprite_rom is
-    signal addr : std_logic_vector(6 downto 0);         
+    signal addr : std_logic_vector(5 downto 0);         
     begin
         process(clk) is begin
             if rising_edge(clk) then

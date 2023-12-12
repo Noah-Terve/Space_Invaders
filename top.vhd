@@ -88,7 +88,8 @@ component game_logic is
         bullety               : out unsigned (9 downto 0);
         bulletvalid           : out std_logic;
 		
-		game_over			  : out std_logic
+		game_over			  : out std_logic;
+		win_state			  : out std_logic
     );
 end component;
 		
@@ -97,6 +98,7 @@ component gamestate is
 		gamestate_clk         : in std_logic;
 		controller_data       : in std_logic_vector (7 downto 0);
 		gameover			  : in std_logic;
+		win					  : in std_logic;
 		reset				  : out std_logic;
 		curr_gamestate		  : out unsigned (1 downto 0)
     );
@@ -125,6 +127,7 @@ signal logic_bulletvalid  : std_logic;
 
 signal logic_game_over    : std_logic;
 signal state              : unsigned (1 downto 0);
+signal logic_win	      : std_logic;
 
 
 begin
@@ -191,12 +194,14 @@ begin
 			bullety => logic_bullety,
 			bulletvalid => logic_bulletvalid,
 			
-			game_over => logic_game_over
+			game_over => logic_game_over,
+			win_state => logic_win
 	);
 	statemachine : gamestate port map (
 		gamestate_clk => nes_clk, 
 		controller_data => nes_result,
 		gameover => logic_game_over,
+		win => logic_win,
 		reset => reset_sig,
 		curr_gamestate => state
 	);

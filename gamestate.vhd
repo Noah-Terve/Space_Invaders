@@ -7,6 +7,7 @@ entity gamestate is
 	gamestate_clk         : in std_logic;
 	controller_data       : in std_logic_vector (7 downto 0);
 	gameover			  : in std_logic;
+	win					  : in std_logic;
 	reset 				  : out std_logic;
 	curr_gamestate		  : out unsigned (1 downto 0)
     );
@@ -33,24 +34,45 @@ process (gamestate_clk) begin
 		end if;
 
 		-- start button is pressed while game is not in play
-		if (curr_gamestate = 0 and controller_data(4) = '1' and cooldown_clk = 0) then
+		if (curr_gamestate = "00" and controller_data(4) = '1' and cooldown_clk = 0) then
 			reset <= '1';
 			curr_gamestate <= "01";
 			cooldown_clk <= cooldown_init;
 		end if;
 		
-		-- game is in play and gameover flag is thrown
-		if (curr_gamestate = 1) then
-			if (gameover = '1') then
+		-- We are currently playing the game.
+		if (curr_gamestate = "01") then
+			if (gameover = '1' and win = '0') then -- If we lose, go to the lose state
+				curr_gamestate <= "11";
+				cooldown_clk <= cooldown_init;
+			elsif (gameover = '0' and win = '1') then -- If we win, go to the win state
 				curr_gamestate <= "10";
 				cooldown_clk <= cooldown_init;
-			elsif (controller_data(4) = '1' and cooldown_clk = 0) then
+			elsif (controller_data(4) = '1' and cooldown_clk = 0) then -- If the start button is pressed, go to start screen
 				curr_gamestate <= "00";
 				cooldown_clk <= cooldown_init;
+			else -- No win or lose, stay in the playing state
+				curr_gamestate <= "01";
 			end if;
 		end if;
 
-		if (curr_gamestate = 2 and controller_data(4) = '1' and cooldown_clk = 0) then
+
+		-- game is in play and gameover flag is thrown
+		-- if (curr_gamestate = "01") then
+		-- 	if (gameover = '1' and win = '1') then
+		-- 		curr_gamestate <= "10";
+		-- 		cooldown_clk <= cooldown_init;
+		-- 	elsif (gameover = '1' and win = '0') then
+		-- 		curr_gamestate <= "11";
+		-- 		cooldown_clk <= cooldown_init;
+		-- 	elsif (controller_data(4) = '1' and cooldown_clk = 0) then
+		-- 		curr_gamestate <= "00";
+		-- 		cooldown_clk <= cooldown_init;
+		-- 	end if;
+		-- end if;
+
+		-- If we won or lost the game and the start button is pressed, go to start screen.
+		if ((curr_gamestate = "10" or curr_gamestate = "11") and controller_data(4) = '1' and cooldown_clk = 0) then
 			curr_gamestate <= "00";
 			cooldown_clk <= cooldown_init;
 		end if;

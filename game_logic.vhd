@@ -20,7 +20,8 @@ entity game_logic is
         bullety               : out unsigned (9 downto 0);
         bulletvalid           : out std_logic;
 		
-		game_over             : out std_logic
+		game_over             : out std_logic;
+		win_state 			  : out std_logic
     );
 end game_logic;
 
@@ -48,6 +49,7 @@ signal cooldown_clk       : unsigned (15 downto 0);
 signal alien_x_offset     : unsigned (5 downto 0);
 signal alien_y_offset     : unsigned (4 downto 0);
 signal gameover           : std_logic;
+signal win	 			  : std_logic;
 
 signal alien_speed		  : unsigned (15 downto 0);
 
@@ -62,24 +64,45 @@ begin
     bullety <= bullet_yposition;
     bulletvalid <= bullet_present;
 	game_over <= gameover;
+	win_state <= win;
 	
 	alien_x_offset <= 6d"32";
     alien_y_offset <= 5d"29";
 
-	alien_direction <= '0' when (alien_xposition > 10d"290")
+	alien_direction <= '0' when (alien_xposition > 10d"311")
 				  else '1' when (alien_xposition < 10b"100000") 
 				  else alien_direction;
 
     process (given_clk) begin
-        if rising_edge (given_clk) then
+        if rising_edge(given_clk) then
+		
+				-- Initial state of win and lose signals.
+				win <= '0';
+				gameover <= '0';
 
-				if ((gameover = '0') and (alien_positions = "11111111111111111111")) then
-					gameover <= '1';
-                elsif (alien_yposition > to_unsigned(382, 10)) then
-                    gameover <= '1';
-                else
-					gameover <= '0';
-				end if;
+                if ((gameover = '0') and (win = '0') and (reset = '0')) then -- If no win or loss has occured
+					-- If all aliens are dead, we win.
+                    if (((alien_positions = "11111111111111111111"))) then 
+                        win <= '1';
+					end if;
+					
+                    -- If aliens reach the bottom and they are not all dead, we lose.
+                    if (alien_yposition > to_unsigned(382, 10)) and (alien_positions /= "11111111111111111111") then
+                        gameover <= '1';
+                    end if;
+                end if;				
+		
+
+				-- if ((gameover = '0') and (alien_positions = "11111111111111111111") and (reset = '0')) then
+				-- 	gameover <= '1';
+				-- 	win <= '1';
+                -- elsif (alien_yposition > to_unsigned(382, 10)) and (alien_positions /= "11111111111111111111") then
+                --     gameover <= '1';
+				-- 	win <= '0';
+                -- else
+				-- 	gameover <= '0';
+				-- 	win <= '0';
+				-- end if;
 
                 -- counter for alien movement and bullet movement
                 alien_clock <= alien_clock + 1;
@@ -119,7 +142,7 @@ begin
                     -- check bullet collision
 
                     --move bullet
-                    if (bullet_clock(1) = '1') then
+                    if (bullet_clock(1 downto 0) = "01") then
                         bullet_yposition <= bullet_yposition - 1;
                         bullet_clock <= 16b"0";
                     end if;
@@ -141,7 +164,7 @@ begin
                     if (alien_xposition = 10b"11111") then
                         alien_yposition <= alien_yposition + 15;
                     end if;
-                    if (alien_xposition = 10d"290") then
+                    if (alien_xposition = 10d"269") then
                         alien_yposition <= alien_yposition + 15;
                     end if;
                     
@@ -155,6 +178,7 @@ begin
                         if (bullet_yposition < (alien_yposition + 7)) and ((bullet_yposition + 12) > alien_yposition) then
                             if ((bullet_xposition + 5) > alien_xposition and bullet_xposition < (alien_xposition + 11)) then
                                 alien_positions(0) <= '1';
+								bullet_present <= '0';
                             end if;
                         end if;
 
@@ -368,7 +392,7 @@ begin
                             end if;
                         end if;
                     end if;
-                elsif (alien_positions = "11111111111111111111") or (reset = '1') then
+                elsif (alien_positions = "11111111111111111111") or (reset = '1') or (alien_yposition > to_unsigned(382, 10)) then
                     alien_positions <= "00000000000000000000";
                     alien_xposition <= 10d"30";
                     alien_yposition <= 10b"0";

@@ -14,10 +14,10 @@ entity vga is
 end vga;
 
 architecture synth of vga is
-	signal next_col : unsigned(9 downto 0) := 10b"0";
-	signal next_row : unsigned(9 downto 0) := 10b"0";
-	signal col_temp : unsigned(9 downto 0) := 10b"0";
-	signal row_temp : unsigned(9 downto 0) := 10b"0";
+	signal next_col : unsigned(9 downto 0);
+	signal next_row : unsigned(9 downto 0);
+	signal col_temp : unsigned(9 downto 0);
+	signal row_temp : unsigned(9 downto 0);
 begin
 	process(clk) begin
 		if rising_edge(clk) then

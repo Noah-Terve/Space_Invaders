@@ -44,12 +44,19 @@ signal startscreen_pixel  : std_logic_vector(5 downto 0);
 signal drawing_startscreen : std_logic;
 signal startscreen_output : std_logic_vector(5 downto 0);
 
--- start screen constants
+-- gameover screen constants
 signal gameover_x_diff : unsigned (9 downto 0);
 signal gameover_y_diff : unsigned (9 downto 0);
 signal gameover_pixel  : std_logic_vector(5 downto 0);
 signal drawing_gameover : std_logic;
 signal gameover_output : std_logic_vector(5 downto 0);
+
+-- win screen constants
+signal winscreen_x_diff : unsigned (9 downto 0);
+signal winscreen_y_diff : unsigned (9 downto 0);
+signal winscreen_pixel  : std_logic_vector(5 downto 0);
+signal drawing_winscreen : std_logic;
+signal winscreen_output : std_logic_vector(5 downto 0);
 
 -- Player Constants
 signal player_width : unsigned(3 downto 0);
@@ -223,6 +230,15 @@ component gameover_background is
   );
 end component;
 
+component win_background_rom is
+  port(
+		clk : in std_logic;
+		xaddr : in unsigned(8 downto 0);
+		yaddr : in unsigned(7 downto 0);
+		rgb : out std_logic_vector(5 downto 0)
+  );
+end component;
+
 begin
 	start : startscreen_background_rom port map (
 		clk => clk,
@@ -236,6 +252,13 @@ begin
 		xaddr => gameover_x_diff(8 downto 0),
 		yaddr => gameover_y_diff(5 downto 0),
 		rgb => gameover_pixel
+	);
+	
+	win : win_background_rom port map (
+		clk => clk,
+		xaddr => winscreen_x_diff(8 downto 0),
+		yaddr => winscreen_y_diff(7 downto 0),
+		rgb => winscreen_pixel
 	);
 
 	player_sprite_map : player_sprite port map (
@@ -416,6 +439,12 @@ begin
 	gameover_y_diff <= row - 10d"210";
 
 	drawing_gameover <= '1' when (col >= 10d"137" and col <= 10d"137" + 10d"365") and (row >= 10d"210" and row <= 10d"210" + 10d"60") else '0';
+	
+	-- win screen display logic --
+	winscreen_x_diff <= col - 10d"160";
+	winscreen_y_diff <= row - 10d"125";
+	
+	drawing_winscreen <= '1' when (col >= 10d"160" and col <= 10d"160" + 10d"320") and (row >= 10d"125" and row <= 10d"125" + 10d"229") else '0';
 
 	-- Player Display Logic --
 	player_diff_x <= col - player_x;
@@ -531,7 +560,10 @@ begin
 
 	gameover_output <= gameover_pixel when drawing_gameover else 6b"0";
 	
+	winscreen_output <= winscreen_pixel when drawing_winscreen else 6b"0";
+	
 	rgb <= output when (valid = '1') and (game_state = "01") else 
 		   startscreen_output when (valid = '1') and (game_state = "00") else
-		   gameover_output when (valid = '1') and (game_state = "10") else 6b"0";
+		   winscreen_output when (valid = '1') and (game_state = "10") else
+		   gameover_output when (valid = '1') and (game_state = "11")  else 6b"0";
 end;
